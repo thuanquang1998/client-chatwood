@@ -103,6 +103,11 @@ const MyChatBot = () => {
             checkboxes: { items: ["Phone", "Email", "SMS"], min: 1 },
             chatDisabled: true,
             function: (params) => setForm({ ...form, contact_method: params.userInput }),
+            path: "ask_additional_info"
+        },
+        ask_additional_info: {
+            message: "Please provide any additional information you would like us to know:",
+            function: (params) => setForm({ ...form, additional_info: params.userInput }),
             path: "end"
         },
         end: {
@@ -115,6 +120,7 @@ const MyChatBot = () => {
                     <p>Loan Interest: {form.loan_interest}</p>
                     <p>Loan Amount: {form.loan_amount}</p>
                     <p>Contact Method: {form.contact_method}</p>
+                    <p>Additional Information: {form.additional_info}</p>
                 </div>
             ),
             options: ["Start a New Inquiry"],
@@ -125,11 +131,11 @@ const MyChatBot = () => {
 
     const chatbotStyle = {
         position: 'fixed',
-        bottom: '180px',
-        right: '100px',
-        width: '300px',
-        height: '400px',
-        border: '1px solid #ccc',
+        bottom: '20px',
+        right: '20px',
+        // width: '300px',
+        // height: '400px',
+        // border: '1px solid #ccc',
         borderRadius: '8px',
         backgroundColor: '#fff',
         zIndex: 1000,
@@ -145,6 +151,7 @@ const MyChatBot = () => {
                     "secondaryColor": "#daedf2",
                     "showFooter": false
                 },
+                voice: {disabled: false},
                 chatHistory: {storageKey: "example_basic_form"},
                 // "chatInput": {
                 //     "enabledPlaceholderText": "How can I help you?"

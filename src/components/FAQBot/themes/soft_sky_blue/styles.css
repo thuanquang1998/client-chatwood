@@ -26,6 +26,10 @@
     font-weight: 700;
     border-radius: 12px 12px 0 0;
   }
+
+  .rcb-chat-input-button-container {
+    display: flex;
+  }
   
   .rcb-chat-messages {
     background-color: #F0F8FF;
