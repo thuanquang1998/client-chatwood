@@ -1,5 +1,6 @@
 import ChatBot from "react-chatbotify";
-import React from "react";
+import React from 'react';
+import ReactDOM from 'react-dom';
 import styles from './themes/soft_sky_blue/styles.json'
 import './themes/soft_sky_blue/styles.css'
 
@@ -67,8 +68,21 @@ const MyChatBot = () => {
 		},
 	};
 
+    const chatbotStyle = {
+        position: 'fixed',
+        bottom: '180px',
+        right: '100px',
+        width: '300px',
+        height: '400px',
+        border: '1px solid #ccc',
+        borderRadius: '8px',
+        backgroundColor: '#fff',
+        zIndex: 1000,
+    };
+
 	return (
-		<ChatBot 
+        <div style={chatbotStyle}>
+            <ChatBot 
             settings={{
                 general: {
                     embedded: true,
@@ -92,7 +106,15 @@ const MyChatBot = () => {
             flow={flow}
             onSend={(params) => console.log("params ",params)}
         />
+        </div>
+		
 	);
+};
+
+window.initChatbot = () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+    ReactDOM.render(<MyChatBot />, container);
 };
 
 export default MyChatBot

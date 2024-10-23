@@ -6,10 +6,10 @@ import FAQBot from './components/FAQBot'
 function App() {
   return (
     <div>
-      <div className="m-10">
+      {/* <div className="m-10"> */}
         <FAQBot/>
-      </div>
-      <Chatbot/>
+      {/* </div> */}
+      {/* <Chatbot/> */}
       {/* <Chat/> */}
     </div>
       
