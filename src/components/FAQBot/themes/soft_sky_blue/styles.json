@@ -1,0 +1,92 @@
+{
+    "headerStyle": {
+      "backgroundImage": "linear-gradient(to right, #5BC6E6, #4AB0D0)",
+      "color": "#fff",
+      "textShadow": "none"
+    },
+    "chatWindowStyle": {
+      "backgroundColor": "#F0F8FF"
+    },
+    "botBubbleStyle": {
+      "textAlign": "left",
+      "color": "#333333",
+      "borderRadius": "18px 18px 18px 4px",
+      "backgroundColor": "#E6F3FF",
+      "padding": "10px 14px"
+    },
+    "userBubbleStyle": {
+      "backgroundColor": "#5BC6E6",
+      "color": "#ffffff",
+      "borderRadius": "18px 18px 4px 18px"
+    },
+    "chatInputContainerStyle": {
+      "backgroundColor": "#F0F8FF"
+    },
+    "chatInputAreaStyle": {
+      "minHeight": 0,
+      "border": "1px solid #daedf2",
+      "padding": "8px 15px",
+      "backgroundColor": "white",
+      "color": "#333333",
+      "fontSize": "14px",
+      "outlineColor": "transparent",
+      "borderRadius": "20px"
+    },
+    "sendButtonStyle": {
+      "display": "flex",
+      "backgroundColor": "#5BC6E6",
+      "color": "white",
+      "borderRadius": "50%",
+      "width": "36px",
+      "height": "36px",
+      "alignItems": "center",
+      "justifyContent": "center"
+    },
+    "chatHistoryButtonStyle": {
+      "color": "#5BC6E6",
+      "backgroundColor": "white",
+      "border": "1px solid #daedf2"
+    },
+    "chatHistoryButtonHoveredStyle": {
+      "color": "#4AB0D0",
+      "backgroundColor": "#F0F8FF",
+      "border": "1px solid #5BC6E6"
+    },
+    "tooltipStyle": {
+      "padding": "8px 12px",
+      "borderRadius": "15px",
+      "color": "#333333",
+      "backgroundColor": "#E6F3FF"
+    },
+    "botOptionStyle": {
+      "color": "#5BC6E6",
+      "backgroundColor": "white",
+      "border": "1px solid #daedf2"
+    },
+    "botOptionHoveredStyle": {
+      "color": "#4AB0D0",
+      "backgroundColor": "#F0F8FF",
+      "border": "1px solid #5BC6E6",
+      "boxShadow": "none"
+    },
+    "botCheckboxRowStyle": {
+      "color": "#333333",
+      "backgroundColor": "white",
+      "border": "1px solid #daedf2",
+      "borderRadius": "6px",
+      "boxShadow": "none"
+    },
+    "botCheckboxNextStyle": {
+      "color": "#5BC6E6",
+      "backgroundColor": "white",
+      "border": "1px solid #daedf2",
+      "borderRadius": "6px",
+      "boxShadow": "none"
+    },
+    "botCheckMarkSelectedStyle": {
+      "backgroundColor": "#5BC6E6"
+    },
+    "loadingSpinnerStyle": {
+      "borderTop": "4px solid #5BC6E6"
+    }
+  }

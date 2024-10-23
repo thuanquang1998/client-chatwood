@@ -1,0 +1,17 @@
+{
+	"chatInput": {
+		"enabledPlaceholderText": "What can we help you with ?"
+	},
+	"notification": {
+		"disabled": true
+	},
+	"general": {
+		"primaryColor": "#5BC6E6",
+		"secondaryColor": "#daedf2",
+		"showFooter": false
+	},
+	"header": {
+		"showAvatar": true,
+		"title": ""
+	}
+}

@@ -1,0 +1,9 @@
+.rcb-close-chat-icon {
+  height: 18px;
+  width: 18px;
+}
+
+.rcb-chat-header {
+  display: flex;
+  align-items: center;
+}
