@@ -68,6 +68,61 @@ const MyChatBot = () => {
 		},
 	};
 
+    const flowBank = {
+        start: {
+            message: "Welcome to ABC Bank! What is your name?",
+            function: (params) => setForm({ ...form, name: params.userInput }),
+            path: "ask_account_type"
+        },
+        ask_account_type: {
+            message: (params) => `Nice to meet you ${params.userInput}! What type of account are you interested in?`,
+            options: ["Checking Account", "Savings Account", "Business Account"],
+            chatDisabled: true,
+            function: (params) => setForm({ ...form, account_type: params.userInput }),
+            path: "ask_income"
+        },
+        ask_income: {
+            message: "What is your monthly income?",
+            function: (params) => setForm({ ...form, income: params.userInput }),
+            path: "ask_loans"
+        },
+        ask_loans: {
+            message: "Are you interested in applying for a loan?",
+            options: ["Yes", "No"],
+            chatDisabled: true,
+            function: (params) => setForm({ ...form, loan_interest: params.userInput }),
+            path: "ask_loan_amount"
+        },
+        ask_loan_amount: {
+            message: "If yes, how much would you like to borrow?",
+            function: (params) => setForm({ ...form, loan_amount: params.userInput }),
+            path: "ask_contact_method"
+        },
+        ask_contact_method: {
+            message: "How would you like us to contact you?",
+            checkboxes: { items: ["Phone", "Email", "SMS"], min: 1 },
+            chatDisabled: true,
+            function: (params) => setForm({ ...form, contact_method: params.userInput }),
+            path: "end"
+        },
+        end: {
+            message: "Thank you for your interest in ABC Bank! Here’s what we have recorded:",
+            component: (
+                <div style={formStyle}>
+                    <p>Name: {form.name}</p>
+                    <p>Account Type: {form.account_type}</p>
+                    <p>Monthly Income: {form.income}</p>
+                    <p>Loan Interest: {form.loan_interest}</p>
+                    <p>Loan Amount: {form.loan_amount}</p>
+                    <p>Contact Method: {form.contact_method}</p>
+                </div>
+            ),
+            options: ["Start a New Inquiry"],
+            chatDisabled: true,
+            path: "start"
+        },
+    };
+
     const chatbotStyle = {
         position: 'fixed',
         bottom: '180px',
@@ -103,7 +158,7 @@ const MyChatBot = () => {
                 }
             }} 
             styles={styles}
-            flow={flow}
+            flow={flowBank}
             onSend={(params) => console.log("params ",params)}
         />
         </div>
