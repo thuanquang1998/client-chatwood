@@ -3,9 +3,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styles from './themes/soft_sky_blue/styles.json'
 import './themes/soft_sky_blue/styles.css'
+import iconImg from '../../assets/icon_chatbot.png'
 
 const MyChatBot = () => {
 	const [form, setForm] = React.useState({});
+    const [isShow, setIsShow] = React.useState(true)
 	const formStyle = {
 		marginTop: 10,
 		marginLeft: 20,
@@ -143,31 +145,47 @@ const MyChatBot = () => {
 
 	return (
         <div style={chatbotStyle}>
-            <ChatBot 
-            settings={{
-                general: {
-                    embedded: true,
-                    "primaryColor": "#4AB0D0",
-                    "secondaryColor": "#daedf2",
-                    "showFooter": false
-                },
-                voice: {disabled: false},
-                chatHistory: {storageKey: "example_basic_form"},
-                // "chatInput": {
-                //     "enabledPlaceholderText": "How can I help you?"
-                // },
-                // "notification": {
-                //     "disabled": true
-                // },
-                "header": {
-                    "showAvatar": true,
-                    "title": "Chatbot IDB",
-                }
-            }} 
-            styles={styles}
-            flow={flowBank}
-            onSend={(params) => console.log("params ",params)}
-        />
+            <div className="fixed bottom-5 right-5">
+                {!isShow?
+                <button onClick={() => setIsShow(true)}>
+                    <img className="w-16 h-16" src={iconImg} alt="icon"/>
+                </button>:
+                <ChatBot 
+                    settings={{
+                        general: {
+                            // embedded: true,
+                            "primaryColor": "#4AB0D0",
+                            "secondaryColor": "#daedf2",
+                            "showFooter": false,
+                        },
+                        voice: {disabled: false},
+                        chatHistory: {storageKey: "example_basic_form"},
+                        ariaLabel: {
+                            chatButton: "Chatbot IDB",
+                            closeChatButton: <button>aaaaa</button>
+                        },
+                        fileAttachment: {
+                            disabled:false
+                        },
+                        emoji: {
+                            disabled:false
+                        },
+                        // "chatInput": {
+                        //     "enabledPlaceholderText": "How can I help you?"
+                        // },
+                        // "notification": {
+                        //     "disabled": true
+                        // },
+                        "header": {
+                            "showAvatar": true,
+                            "title": "Chatbot IDB",
+                        }
+                    }} 
+                    styles={styles}
+                    flow={flowBank}
+                    onSend={(params) => console.log("params ",params)}
+                />}
+            </div>
         </div>
 		
 	);
