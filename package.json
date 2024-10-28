@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@chatui/core": "^2.4.2",
+    "@google/generative-ai": "^0.21.0",
     "axios": "^1.7.7",
     "react": "^18.3.1",
     "react-chatbotify": "^2.0.0-beta.19",

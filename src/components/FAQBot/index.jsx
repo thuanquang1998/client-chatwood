@@ -4,8 +4,16 @@ import ReactDOM from 'react-dom';
 import styles from './themes/soft_sky_blue/styles.json'
 import './themes/soft_sky_blue/styles.css'
 import iconImg from '../../assets/icon_chatbot.png'
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
 
 const MyChatBot = () => {
+
+    // realtime-stream
+    let apiKey = "AIzaSyCZ8eM7cGHau4eY4cxKA_hP5U6iDm6DT3k";
+	const modelType = "gemini-pro";
+	let hasError = false;
+
 	const [form, setForm] = React.useState({});
     const [isShow, setIsShow] = React.useState(true)
 	const formStyle = {
@@ -15,6 +23,74 @@ const MyChatBot = () => {
 		padding: 10,
 		borderRadius: 5,
 		maxWidth: 300
+	};
+
+    const gemini_stream = async (params) => {
+		try {
+            console.log("apiKey ",apiKey);
+            
+			const genAI = new GoogleGenerativeAI(apiKey);
+			const model = genAI.getGenerativeModel({ model: modelType });
+			const result = await model.generateContentStream(params.userInput);
+
+			let text = "";
+			let offset = 0;
+			for await (const chunk of result.stream) {
+				const chunkText = chunk.text();
+				text += chunkText;
+				// inner for-loop used to visually stream messages character-by-character
+				// feel free to remove this loop if you are alright with visually chunky streams
+				for (let i = offset; i < chunkText.length; i++) {
+					// while this example shows params.streamMessage taking in text input,
+					// you may also feed it custom JSX.Element if you wish
+					await params.streamMessage(text.slice(0, i + 1));
+					await new Promise(resolve => setTimeout(resolve, 30));
+				}
+				offset += chunkText.length;
+			}
+
+			// in case any remaining chunks are missed (e.g. timeout)
+			// you may do your own nicer logic handling for large chunks
+			for (let i = offset; i < text.length; i++) {
+				await params.streamMessage(text.slice(0, i + 1));
+				await new Promise(resolve => setTimeout(resolve, 30));
+			}
+			await params.streamMessage(text);
+
+			// we call endStreamMessage to indicate that all streaming has ended here
+			await params.endStreamMessage();
+		} catch (error) {
+            console.log("error ",error);
+            
+			await params.injectMessage("Unable to load model, is your API Key valid?");
+			hasError = true;
+		}
+	}
+
+    const flowStream={
+		start: {
+			message: "Enter your Gemini api key and start asking away!",
+			path: "api_key",
+			isSensitive: true
+		},
+		api_key: {
+			message: (params) => {
+				apiKey = params.userInput.trim();
+				return "Ask me anything!";
+			},
+			path: "loop",
+		},
+		loop: {
+			message: async (params) => {
+				await gemini_stream(params);
+			},
+			path: () => {
+				if (hasError) {
+					return "start"
+				}
+				return "loop"
+			}
+		}
 	}
 
 	const flow={
@@ -131,6 +207,66 @@ const MyChatBot = () => {
         },
     };
 
+    const flowBankAndStream = {
+        start: {
+            message: "Welcome to ABC Bank! What is your name?",
+            function: (params) => setForm({ ...form, name: params.userInput }),
+            path: "ask_account_type"
+        },
+        ask_account_type: {
+            message: (params) => `Nice to meet you ${params.userInput}! What type of account are you interested in?`,
+            options: ["Checking Account", "Savings Account", "Business Account"],
+            chatDisabled: true,
+            function: (params) => setForm({ ...form, account_type: params.userInput }),
+            path: "ask_income"
+        },
+        ask_income: {
+            message: "What is your monthly income?",
+            function: (params) => setForm({ ...form, income: params.userInput }),
+            path: "ask_loans"
+        },
+        ask_loans: {
+            message: "Are you interested in applying for a loan?",
+            options: ["Yes", "No"],
+            chatDisabled: true,
+            function: (params) => setForm({ ...form, loan_interest: params.userInput }),
+            path: "ask_loan_amount"
+        },
+        ask_loan_amount: {
+            message: "If yes, how much would you like to borrow?",
+            function: (params) => setForm({ ...form, loan_amount: params.userInput }),
+            path: "ask_contact_method"
+        },
+        ask_contact_method: {
+            message: "How would you like us to contact you?",
+            checkboxes: { items: ["Phone", "Email", "SMS"], min: 1 },
+            chatDisabled: true,
+            function: (params) => setForm({ ...form, contact_method: params.userInput }),
+            path: "ask_additional_info"
+        },
+        ask_additional_info: {
+            message: "Please provide any additional information you would like us to know:",
+            function: (params) => {
+                setForm({ ...form, additional_info: params.userInput });
+                // Add Gemini API key to transition
+                // apiKey = "AIzaSyCZ8eM7cGHau4eY4cxKA_hP5U6iDm6DT3k";
+            },
+            path: "loop"
+        },
+        loop: {
+            message: async (params) => {
+                await gemini_stream(params);
+                
+            },
+            path: () => {
+                if (hasError) {
+                    return "start"
+                }
+                return "loop"
+            }
+        },
+    };
+
     const chatbotStyle = {
         position: 'fixed',
         bottom: '20px',
@@ -160,6 +296,7 @@ const MyChatBot = () => {
                         },
                         voice: {disabled: false},
                         chatHistory: {storageKey: "example_basic_form"},
+                        botBubble: {simStream: true},
                         ariaLabel: {
                             chatButton: "Chatbot IDB",
                             closeChatButton: <button>aaaaa</button>
@@ -182,7 +319,7 @@ const MyChatBot = () => {
                         }
                     }} 
                     styles={styles}
-                    flow={flowBank}
+                    flow={flowBankAndStream}
                     onSend={(params) => console.log("params ",params)}
                 />}
             </div>
