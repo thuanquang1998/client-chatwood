@@ -84,3 +84,7 @@
   .rcb-send-button:hover {
     background-color: #4AB0D0;
   }
+
+  .rcb-chat-container > span:not(.rcb-chat-footer > span) {
+    display: none !important;
+  }

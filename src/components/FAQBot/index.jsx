@@ -242,8 +242,35 @@ const MyChatBot = () => {
             checkboxes: { items: ["Phone", "Email", "SMS"], min: 1 },
             chatDisabled: true,
             function: (params) => setForm({ ...form, contact_method: params.userInput }),
-            path: "ask_additional_info"
+            path: "upload_resume"
         },
+        // ask_additional_info: {
+        //     message: "Please provide any additional information you would like us to know:",
+        //     function: (params) => {
+        //         setForm({ ...form, additional_info: params.userInput });
+        //         // Add Gemini API key to transition
+        //         // apiKey = "AIzaSyCZ8eM7cGHau4eY4cxKA_hP5U6iDm6DT3k";
+        //     },
+        //     path: "loop"
+        // },
+        // loop: {
+        //     message: async (params) => {
+        //         await gemini_stream(params);
+                
+        //     },
+        //     path: () => {
+        //         if (hasError) {
+        //             return "start"
+        //         }
+        //         return "loop"
+        //     }
+        // },
+        upload_resume: {
+			message: (params) => `Please upload your resume.`,
+			chatDisabled: true,
+			file: (params) => handleUpload(params),
+			path: "ask_additional_info"
+		},
         ask_additional_info: {
             message: "Please provide any additional information you would like us to know:",
             function: (params) => {
@@ -253,10 +280,10 @@ const MyChatBot = () => {
             },
             path: "loop"
         },
+        
         loop: {
             message: async (params) => {
                 await gemini_stream(params);
-                
             },
             path: () => {
                 if (hasError) {
@@ -264,8 +291,16 @@ const MyChatBot = () => {
                 }
                 return "loop"
             }
-        },
+        }
     };
+
+    // Example file upload function
+    async function handleUpload(params) {
+        const files = params.files;
+        // Implement your file upload logic here
+        // This could be a call to an API endpoint that handles file uploads
+        console.log("Uploading file:", files);
+    }
 
     const chatbotStyle = {
         position: 'fixed',
@@ -292,10 +327,10 @@ const MyChatBot = () => {
                             // embedded: true,
                             "primaryColor": "#4AB0D0",
                             "secondaryColor": "#daedf2",
-                            "showFooter": false,
+                            "showFooter": true,
                         },
                         voice: {disabled: false},
-                        chatHistory: {storageKey: "example_basic_form"},
+                        chatHistory: {storageKey: "example_file_upload"},
                         botBubble: {simStream: true},
                         ariaLabel: {
                             chatButton: "Chatbot IDB",
